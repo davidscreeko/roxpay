@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Subscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .fieldset {
+            border: 1px solid #000;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .fieldset legend {
+            font-size: 20px;
+            margin-right: 10px; /* Align with label width */
+        }
+        .fieldset div {
+            margin-bottom: 20px; /* Add more space after fields */
+            display: flex;
+            align-items: center;
+        }
+        .fieldset label {
+            display: inline-block;
+            width: 150px; /* Set width for alignment */
+        }
+        .fieldset input, .fieldset select {
+            padding: 5px;
+            width: 150px; /* Set width for fields */
+        }
+        .inline-field {
+            display: inline-block;
+            margin-left: 10px; /* Add space between inline fields */
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-container button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Create Subscription</h1>
+
+<div class="container">
+    <div class="fieldset">
+        <legend>Pricing</legend>
+        <div>
+            <label for="pricing-model">Pricing Model:</label>
+            <select id="pricing-model" name="pricing-model" class="inline-field" onchange="toggleFlatFeeField()">
+                <option value="pay-per-use">Pay-per-use</option>
+                <option value="flat-fee">Flat Fee</option>
+            </select>
+            <select id="flat-fee-frequency" name="flat-fee-frequency" class="inline-field" style="display: none;">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+        </div>
+        <div>
+            <label for="price-amount">Price:</label>
+            <input type="number" id="price-amount" name="price-amount" value="220" class="inline-field">
+            <select id="price-currency" name="price-currency" class="inline-field">
+                <option value="CHF">CHF</option>
+                <!-- Add other currencies as needed -->
+            </select>
+        </div>
+    </div>
+
+    <div class="fieldset">
+        <legend>Payment</legend>
+        <div>
+            <label for="payment-schedule">Payment Schedule:</label>
+            <select id="payment-schedule" name="payment-schedule" class="inline-field" onchange="updateDayOptions()">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+            <select id="schedule-day" name="schedule-day" class="inline-field">
+                <!-- Options will be dynamically populated based on schedule -->
+            </select>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="goBack()">← Back</button>
+        <button onclick="proceedToPayment()">Payment →</button>
+    </div>
+</div>
+
+<script>
+    function toggleFlatFeeField() {
+        const pricingModel = document.getElementById('pricing-model').value;
+        const flatFeeField = document.getElementById('flat-fee-frequency');
+        if (pricingModel === 'flat-fee') {
+            flatFeeField.style.display = 'inline-block';
+        } else {
+            flatFeeField.style.display = 'none';
+        }
+    }
+
+    function updateDayOptions() {
+        const paymentSchedule = document.getElementById('payment-schedule').value;
+        const scheduleDayField = document.getElementById('schedule-day');
+        scheduleDayField.innerHTML = '';
+
+        if (paymentSchedule === 'daily') {
+            scheduleDayField.style.display = 'none';
+        } else {
+            scheduleDayField.style.display = 'inline-block';
+            let options = '';
+
+            if (paymentSchedule === 'weekly') {
+                options = `
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                `;
+            } else if (paymentSchedule === 'monthly') {
+                for (let i = 1; i <= 31; i++) {
+                    options += `<option value="${i}">${i}</option>`;
+                }
+            }
+            scheduleDayField.innerHTML = options;
+        }
+    }
+
+    function goBack() {
+        alert('Going back');
+        // Implement back navigation
+    }
+
+    function proceedToPayment() {
+        alert('Proceeding to payment');
+        // Implement payment navigation
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        toggleFlatFeeField();
+        updateDayOptions();
+    });
+</script>
+
+</body>
+</html>
